@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F5E63">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DermaScan">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Apoyo orientativo a la valoración de lesiones cutáneas con IA. Uso educativo, no clínico.">
+<title>DermaScan AI · consenso v3</title>
+<link rel="apple-touch-icon" id="touchIcon" href="">
+<style>
+:root{
+  --bg:#F4F6F6; --card:#FFFFFF; --ink:#16282A; --muted:#566A6C; --line:#D5DEDF;
+  --brand:#0F5E63; --brand-ink:#FFFFFF; --soft:#E3F0F0; --focus:#0B57D0;
+  --l0-bg:#ECEFEF; --l0-ink:#3E4F51; --l0-bd:#C3CDCE;
+  --l1-bg:#E4F3E6; --l1-ink:#17531F; --l1-bd:#9CCBA3;
+  --l2-bg:#FFF4D6; --l2-ink:#6B4A00; --l2-bd:#E3C165;
+  --l3-bg:#FDECEA; --l3-ink:#8C1D18; --l3-bd:#E5A19C;
+  --l4-bg:#F9D6D2; --l4-ink:#6E100C; --l4-bd:#C9544C;
+  --warn-bg:#FFF4D6; --warn-ink:#5C4200; --bar:#0F5E63;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0F1718; --card:#182324; --ink:#E6EEEE; --muted:#9DB0B2; --line:#2B3B3D;
+    --brand:#5CC0C6; --brand-ink:#06292B; --soft:#1F3436; --focus:#8AB4F8;
+    --l0-bg:#223031; --l0-ink:#B5C5C6; --l0-bd:#3A4D4F;
+    --l1-bg:#173022; --l1-ink:#A9DDB1; --l1-bd:#2F6240;
+    --l2-bg:#3A2E0B; --l2-ink:#F2D68A; --l2-bd:#76601C;
+    --l3-bg:#3B1816; --l3-ink:#F6B9B5; --l3-bd:#7A302C;
+    --l4-bg:#4D1613; --l4-ink:#FFC9C4; --l4-bd:#A9423B;
+    --warn-bg:#3A2E0B; --warn-ink:#F2D68A; --bar:#5CC0C6;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));-webkit-text-size-adjust:100%}
+header{background:var(--brand);color:var(--brand-ink);padding:calc(10px + env(safe-area-inset-top)) 16px 10px}
+header h1{margin:0;font-size:19px;font-weight:700}
+header p{margin:2px 0 0;font-size:12.5px;opacity:.92}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.banner{background:var(--warn-bg);color:var(--warn-ink);font-size:12.5px;padding:8px 16px;border-bottom:1px solid var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:14px 0;padding:14px}
+.card h2{margin:0 0 4px;font-size:16px}
+.card h3{margin:14px 0 4px;font-size:14px}
+.sub{margin:0 0 10px;color:var(--muted);font-size:13px}
+.small{font-size:13px;color:var(--muted)}
+.grid{display:flex;flex-wrap:wrap;gap:10px}
+.grid>div{flex:1 1 140px}
+label.l{display:block;font-size:13px;color:var(--muted);margin-bottom:3px}
+input[type=text],input[type=number],input[type=password],input[type=url],select,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink);font:16px inherit}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:9px 14px;font:600 14px inherit;min-height:44px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--soft);border-color:var(--brand);color:var(--brand)}
+.btn{display:inline-block;border:0;border-radius:10px;background:var(--brand);color:var(--brand-ink);font:700 15px inherit;padding:12px 16px;margin:4px 8px 6px 0;cursor:pointer;min-height:46px}
+.btn.alt{background:var(--soft);color:var(--brand)}
+.btn.big{display:block;width:100%;margin:10px 0 0;font-size:16px;padding:14px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.danger{background:var(--l3-bg);color:var(--l3-ink)}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--warn-bg);color:var(--warn-ink);border:1.5px solid var(--l2-bd);border-radius:12px;padding:12px;font-size:14px;margin-top:12px;cursor:pointer}
+.consent input{width:22px;height:22px;flex:0 0 auto;margin-top:2px;accent-color:var(--brand)}
+.err{background:var(--l3-bg);color:var(--l3-ink);border:1.5px solid var(--l3-bd);border-radius:12px;padding:12px;font-weight:600;margin:12px 0;font-size:14px;word-break:break-word}
+.ok{background:var(--l1-bg);color:var(--l1-ink);border:1.5px solid var(--l1-bd);border-radius:12px;padding:12px;font-weight:600;margin:12px 0;font-size:14px;word-break:break-word}
+.pick{display:flex;gap:10px;flex-wrap:wrap}
+.pick .btn{flex:1 1 140px;margin:0}
+.prev{position:relative;border-radius:14px;overflow:hidden;background:var(--bg);border:1px solid var(--line);max-height:360px;text-align:center}
+.prev img{max-width:100%;max-height:360px;display:block;margin:0 auto}
+.prev img.zoom{transform:scale(2.2);cursor:zoom-out}
+.prev.big{overflow:auto}
+.lv0{background:var(--l0-bg);color:var(--l0-ink);border-color:var(--l0-bd)}
+.lv1{background:var(--l1-bg);color:var(--l1-ink);border-color:var(--l1-bd)}
+.lv2{background:var(--l2-bg);color:var(--l2-ink);border-color:var(--l2-bd)}
+.lv3{background:var(--l3-bg);color:var(--l3-ink);border-color:var(--l3-bd)}
+.lv4{background:var(--l4-bg);color:var(--l4-ink);border-color:var(--l4-bd)}
+.risk{border:2px solid;border-radius:14px;padding:14px;margin:12px 0}
+.risk .t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.8}
+.risk .v{font-size:24px;font-weight:800}
+.risk .segs{display:flex;gap:6px;margin:8px 0}
+.risk .segs i{flex:1;height:10px;border-radius:99px;background:rgba(127,127,127,.25)}
+.risk .segs i.on{background:currentColor}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;background:var(--soft);color:var(--brand);border-radius:99px;padding:3px 10px;margin:3px 6px 3px 0}
+.kv{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.kv div{flex:1 1 90px;background:var(--bg);border-radius:10px;padding:8px 10px}
+.kv b{display:block;font-size:11px;color:var(--muted);text-transform:uppercase}
+.md p{margin:6px 0}.md ul,.md ol{margin:6px 0;padding-left:22px}
+.row{display:flex;gap:12px;align-items:center;padding:12px 2px;border-top:1px solid var(--line);cursor:pointer}
+.row:first-of-type{border-top:0}
+.row .dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.row .m{flex:1;min-width:0}
+.row .m b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13px}
+.bar span.n{flex:0 0 38%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar span.b{flex:1;background:var(--bg);border-radius:99px;height:12px;overflow:hidden}
+.bar span.b i{display:block;height:100%;background:var(--bar)}
+.bar span.c{flex:0 0 auto;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;padding:6px 0}
+td{padding:7px 0;border-top:1px solid var(--line)}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+.stats>div{flex:1 1 150px;background:var(--bg);border-radius:12px;padding:12px}
+.stats b{display:block;font-size:11px;color:var(--muted);text-transform:uppercase}
+.stats .big{font-size:26px;font-weight:800}
+.link{color:var(--brand);font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav button{flex:1;border:0;background:none;color:var(--muted);font:600 12.5px/1.2 inherit;padding:12px 2px;min-height:56px;cursor:pointer}
+nav button.on{color:var(--brand);box-shadow:inset 0 3px 0 var(--brand)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.busy{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,20,22,.88);color:#fff;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center}
+.spin{width:46px;height:46px;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media print{nav,.banner{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>DermaScan AI</h1>
+  <p>Apoyo orientativo a la valoración de lesiones cutáneas · uso educativo, no clínico</p>
+</header>
+<div class="banner" role="note">Herramienta educativa y de apoyo. No es producto sanitario (sin marcado CE), no emite diagnósticos y no sustituye el juicio clínico ni la valoración por dermatología. Ante cualquier sospecha de malignidad, deriva. No subas imágenes con rostro ni escribas datos identificativos.</div>
+<main class="wrap" id="view"></main>
+<nav id="nav" aria-label="Secciones"></nav>
+<div id="busy" class="busy" style="display:none" role="alert"><div class="spin"></div><div id="busyTxt">Analizando…</div><button class="btn alt" id="bCancel" type="button">Cancelar</button></div>
+<input type="file" id="fCam" accept="image/*" capture="environment" style="display:none">
+<input type="file" id="fGal" accept="image/*" style="display:none">
+
+<script>
+(function () {
+'use strict';
+
+/* ---------- Constantes ---------- */
+var KEY_H = 'derma_history_v4', KEY_OLD = 'derma_history_v3', KEY_S = 'derma_settings_v2', KEY_S1 = 'derma_settings_v1', KEY_SECRET = 'derma_secret_v1', KEY_SECRETS = 'derma_secret_v2';
+var DEFAULTS = {provider: 'gemini', models: {gemini: 'gemini-3-flash-preview', openai: 'gpt-5.4-mini', anthropic: 'claude-haiku-5-5', deepseek: 'deepseek-flash', xai: 'grok-4.7'}, thinking: 'low', grounding: true, openaiBase: 'https://api.openai.com/v1', jsonMode: true, proxyUrl: '', remember: true, consensus: false, consensusProviders: ['gemini', 'openai', 'anthropic']};
+var PROVIDERS = {gemini: 'Gemini (Google)', openai: 'OpenAI o compatible (Chat Completions)', anthropic: 'Claude (Anthropic)', xai: 'Grok (xAI)', deepseek: 'DeepSeek', proxy: 'Proxy propio (Gemini)'};
+var PRESET_BASE = {deepseek: 'https://api.deepseek.com', xai: 'https://api.x.ai/v1'};
+function kind(p) { return (p === 'openai' || p === 'deepseek' || p === 'xai') ? 'openai' : p; }
+var RISK = {
+  Low:      {es: 'Bajo',    cls: 'lv1', n: 1},
+  Medium:   {es: 'Medio',   cls: 'lv2', n: 2},
+  High:     {es: 'Alto',    cls: 'lv3', n: 3},
+  Critical: {es: 'Crítico', cls: 'lv4', n: 4}
+};
+var CATS = {benigna: 'Benigna', premaligna: 'Premaligna', basocelular: 'Carcinoma basocelular', epidermoide: 'Carcinoma epidermoide', melanoma: 'Melanoma', inflamatoria: 'Inflamatoria', infecciosa: 'Infecciosa', indeterminada: 'Indeterminada'};
+var CAT_ORDER = ['melanoma', 'epidermoide', 'basocelular', 'premaligna', 'indeterminada', 'inflamatoria', 'infecciosa', 'benigna']; // de más a menos grave (desempate prudente)
+var MALIGN = {melanoma: 1, epidermoide: 1, basocelular: 1};
+var RISK_ORDER = {Low: 1, Medium: 2, High: 3, Critical: 4};
+var REFERRAL = {Routine: 'Ordinaria', Priority: 'Preferente', Urgent: 'Urgente'};
+var REF_ORDER = {Routine: 1, Priority: 2, Urgent: 3};
+var TABS = [{id: 'new', t: 'Nuevo'}, {id: 'hist', t: 'Historial'}, {id: 'atl', t: 'Atlas'}, {id: 'set', t: 'Ajustes'}];
+var ATLAS = [
+  {n: 'Carcinoma basocelular', icd: 'C44.91', sev: 'High', d: 'El cáncer de piel más frecuente. Crece despacio y rara vez metastatiza, pero destruye localmente si no se trata.', f: ['Borde perlado', 'Telangiectasias arboriformes', 'Úlcera central'], u: 'https://dermnetnz.org/topics/basal-cell-carcinoma'},
+  {n: 'Melanoma maligno', icd: 'C43.9', sev: 'Critical', d: 'La forma más agresiva de cáncer de piel, con alto potencial metastásico. La detección precoz cambia el pronóstico.', f: ['Asimetría', 'Bordes irregulares', 'Color heterogéneo', 'Diámetro > 6 mm', 'Evolución'], u: 'https://dermnetnz.org/topics/melanoma'},
+  {n: 'Carcinoma epidermoide', icd: 'C44.92', sev: 'High', d: 'Segundo cáncer de piel más frecuente. Puede metastatizar si no se trata a tiempo.', f: ['Lesión queratósica', 'Úlcera no cicatrizante', 'Crecimiento rápido'], u: 'https://dermnetnz.org/topics/squamous-cell-carcinoma'},
+  {n: 'Queratosis actínica', icd: 'L57.0', sev: 'Medium', d: 'Lesión precancerosa por daño solar crónico. Riesgo de progresión a CEC.', f: ['Escama adherente', 'Eritema', 'Rugosidad'], u: 'https://dermnetnz.org/topics/actinic-keratosis'},
+  {n: 'Nevus melanocítico', icd: 'D22.9', sev: 'Low', d: 'Lunar benigno. Vigilar cambios según criterios ABCDE.', f: ['Simétrico', 'Bordes regulares', 'Color uniforme'], u: 'https://dermnetnz.org/topics/melanocytic-naevus'},
+  {n: 'Psoriasis vulgar', icd: 'L40.0', sev: 'Medium', d: 'Enfermedad inflamatoria crónica con placas eritematosas y escama blanquecina.', f: ['Placas bien delimitadas', 'Escama plateada', 'Signo de Auspitz'], u: 'https://dermnetnz.org/topics/psoriasis'},
+  {n: 'Dermatitis atópica / Eccema', icd: 'L20.9', sev: 'Low', d: 'Inflamación crónica pruriginosa, frecuente en flexuras.', f: ['Prurito intenso', 'Eritema', 'Liquenificación'], u: 'https://dermnetnz.org/topics/atopic-dermatitis'},
+  {n: 'Criterios ABCDE (melanoma)', icd: 'REF', sev: 'Critical', d: 'Regla mnemotécnica para sospecha de melanoma: Asimetría, Bordes, Color, Diámetro, Evolución.', f: ['Asimetría', 'Bordes irregulares', 'Color múltiple', 'Diámetro >6 mm', 'Evolución'], u: 'https://www.aad.org/public/diseases/skin-cancer/find/at-risk/abcdes'},
+  {n: 'DermNet NZ', icd: 'REF', sev: 'Low', d: 'Atlas dermatológico con imágenes y guías clínicas revisadas.', f: ['Atlas fotográfico', 'Guías de tratamiento'], u: 'https://dermnetnz.org'},
+  {n: 'Skin Deep (piel de color)', icd: 'REF', sev: 'Low', d: 'Presentación de enfermedades cutáneas en pieles oscuras (fototipos IV–VI). Útil para evitar sesgos diagnósticos.', f: ['Diversidad de fototipos', 'Atlas especializado'], u: 'https://www.skin-deep.org'},
+  {n: 'DermIS', icd: 'REF', sev: 'Low', d: 'Dermatology Information System: atlas con diagnóstico diferencial, multilingüe.', f: ['Búsqueda por morfología', 'Diagnóstico diferencial'], u: 'https://www.dermis.net'},
+  {n: 'Guías AEDV / AAD', icd: 'REF', sev: 'Low', d: 'Guías clínicas de la Academia Española de Dermatología y Venereología y de la American Academy of Dermatology.', f: ['Criterios de derivación', 'Prevención'], u: 'https://aedv.es'}
+];
+
+/* ---------- Estado ---------- */
+var S = {
+  tab: 'new', cfg: {}, secrets: {gemini: '', openai: '', anthropic: '', deepseek: '', xai: '', proxy: ''}, history: [],
+  form: emptyForm(),
+  img: null, consent: false, err: '', info: '', current: null, openId: null, ctls: []
+};
+var viewEl = document.getElementById('view');
+var navEl = document.getElementById('nav');
+var busyEl = document.getElementById('busy');
+
+/* ---------- Utilidades ---------- */
+function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function lsGet(k, store) { try { return (store || window.localStorage).getItem(k); } catch (e) { return null; } }
+function lsSet(k, v, store) { try { (store || window.localStorage).setItem(k, v); return true; } catch (e) { return false; } }
+function lsDel(k, store) { try { (store || window.localStorage).removeItem(k); } catch (e) { /* nada */ } }
+function uid() { return 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+function el(id) { return document.getElementById(id); }
+function pct(x) { return Math.round(x * 100) + '%'; }
+function riskOf(l) { return RISK[l] || RISK.Medium; }
+function emptyForm() { return {age: '', sex: '', loc: '', evol: '', size: '', phototype: '', dermo: 'na', animal: false, sun: false, bleed: false, itch: false, sp_size: false, sp_shape: false, sp_color: false, sp_diam: false, efg: false, hutch: false, ugly: false}; }
+function patientOf(d) { return {age: d.age, sex: d.sex, location: d.loc, evolutionTime: d.evol, sizeMm: d.size, phototype: d.phototype, animalContact: d.animal, sunExposure: d.sun, bleeding: d.bleed, itching: d.itch, dermo: d.dermo, sp_size: d.sp_size, sp_shape: d.sp_shape, sp_color: d.sp_color, sp_diam: d.sp_diam, efg: d.efg, hutch: d.hutch, ugly: d.ugly}; }
+function norm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim(); }
+function hi(l) { return l === 'High' || l === 'Critical'; }
+
+// Markdown mínimo y seguro: escapa primero, después aplica negrita, listas y párrafos.
+function md(text) {
+  var lines = esc(text).split(/\r?\n/), out = [], list = null, i, m, t;
+  function close() { if (list) { out.push('</' + list + '>'); list = null; } }
+  for (i = 0; i < lines.length; i++) {
+    t = lines[i].replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    if ((m = /^\s*[-*]\s+(.*)$/.exec(t))) { if (list !== 'ul') { close(); out.push('<ul>'); list = 'ul'; } out.push('<li>' + m[1] + '</li>'); }
+    else if ((m = /^\s*\d+[.)]\s+(.*)$/.exec(t))) { if (list !== 'ol') { close(); out.push('<ol>'); list = 'ol'; } out.push('<li>' + m[1] + '</li>'); }
+    else if (/^\s*$/.test(t)) { close(); }
+    else { close(); out.push('<p>' + t.replace(/^#+\s*/, '') + '</p>'); }
+  }
+  close();
+  return out.join('');
+}
+
+function wilson(k, n) {
+  if (n === 0) { return [0, 0]; }
+  var z = 1.96, p = k / n, d = 1 + z * z / n, c = p + z * z / (2 * n);
+  var m = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n));
+  return [Math.max(0, (c - m) / d), Math.min(1, (c + m) / d)];
+}
+
+/* ---------- Persistencia (sin imágenes) ---------- */
+function strip(h) { var o = {}, k; for (k in h) { if (h.hasOwnProperty(k) && k !== 'imageUrl') { o[k] = h[k]; } } return o; }
+function saveHistory() {
+  var arr = [], i;
+  for (i = 0; i < S.history.length; i++) { arr.push(strip(S.history[i])); }
+  if (!lsSet(KEY_H, JSON.stringify(arr))) { S.err = 'No se pudo guardar el historial en este dispositivo (almacenamiento lleno o bloqueado).'; }
+}
+function loadHistory() {
+  var raw = lsGet(KEY_H) || lsGet(KEY_OLD), arr = [], parsed, i;
+  try { parsed = raw ? JSON.parse(raw) : []; } catch (e) { parsed = []; }
+  if (!(parsed instanceof Array)) { parsed = []; }
+  for (i = 0; i < parsed.length; i++) {
+    if (parsed[i] && parsed[i].analysis && !parsed[i].isDemo) { arr.push(strip(parsed[i])); }
+  }
+  S.history = arr;
+  if (lsGet(KEY_OLD)) { saveHistory(); lsDel(KEY_OLD); } // migración: se borran las fotos del formato antiguo
+}
+function loadSettings() {
+  var raw = lsGet(KEY_S), old = lsGet(KEY_S1), o = {}, k, m;
+  try { o = raw ? JSON.parse(raw) : (old ? JSON.parse(old) : {}); } catch (e) { o = {}; }
+  o = o || {};
+  for (k in DEFAULTS) { if (DEFAULTS.hasOwnProperty(k)) { S.cfg[k] = (o[k] !== undefined) ? o[k] : DEFAULTS[k]; } }
+  S.cfg.models = {gemini: DEFAULTS.models.gemini, openai: DEFAULTS.models.openai, anthropic: DEFAULTS.models.anthropic, deepseek: DEFAULTS.models.deepseek, xai: DEFAULTS.models.xai};
+  if (o.models) { for (m in S.cfg.models) { if (o.models[m]) { S.cfg.models[m] = o.models[m]; } } }
+  if (!raw && old) { // migración de la versión anterior (solo Gemini directo o proxy)
+    if (o.mode === 'proxy') { S.cfg.provider = 'proxy'; }
+    if (o.model) { S.cfg.models.gemini = o.model; }
+  }
+  if (!PROVIDERS[S.cfg.provider]) { S.cfg.provider = 'gemini'; }
+  var sraw = lsGet(KEY_SECRETS) || lsGet(KEY_SECRETS, window.sessionStorage), so = null;
+  try { so = sraw ? JSON.parse(sraw) : null; } catch (e2) { so = null; }
+  if (so) { for (k in S.secrets) { if (so[k]) { S.secrets[k] = so[k]; } } }
+  else {
+    var old1 = lsGet(KEY_SECRET) || lsGet(KEY_SECRET, window.sessionStorage);
+    if (old1) { S.secrets[S.cfg.provider === 'proxy' ? 'proxy' : 'gemini'] = old1; saveSettings(); }
+  }
+}
+function saveSettings() {
+  lsSet(KEY_S, JSON.stringify(S.cfg));
+  lsDel(KEY_SECRETS); lsDel(KEY_SECRETS, window.sessionStorage); lsDel(KEY_SECRET); lsDel(KEY_SECRET, window.sessionStorage);
+  var any = false, k; for (k in S.secrets) { if (S.secrets[k]) { any = true; } }
+  if (any) { lsSet(KEY_SECRETS, JSON.stringify(S.secrets), S.cfg.remember ? window.localStorage : window.sessionStorage); }
+}
+
+/* ---------- Imagen ---------- */
+function compress(dataUrl, cb) {
+  var img = new Image();
+  img.onload = function () {
+    var MAX = 800, w = img.width, h = img.height;
+    if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } } else { if (h > MAX) { w = w * MAX / h; h = MAX; } }
+    var cv = document.createElement('canvas');
+    cv.width = Math.round(w); cv.height = Math.round(h);
+    var ctx = cv.getContext('2d');
+    ctx.drawImage(img, 0, 0, cv.width, cv.height);
+    // Heurística simple de calidad: varianza de Laplaciano aproximada para nitidez y brillo medio
+    var idata = ctx.getImageData(0, 0, cv.width, cv.height).data;
+    var sum = 0, sumsq = 0, n = 0, bright = 0;
+    for (var i = 0; i < idata.length; i += 16) { // muestreo
+      var gray = (idata[i] + idata[i+1] + idata[i+2]) / 3;
+      bright += gray; n++;
+      if (i + 16 < idata.length) {
+        var next = (idata[i+16] + idata[i+17] + idata[i+18]) / 3;
+        var d = gray - next;
+        sum += d; sumsq += d * d;
+      }
+    }
+    var meanBright = bright / n;
+    var varLap = (sumsq / n) - Math.pow(sum / n, 2);
+    var quality = (varLap > 50 && meanBright > 40 && meanBright < 220) ? 'ok' : 'low';
+    cb(cv.toDataURL('image/jpeg', 0.7), quality);
+  };
+  img.onerror = function () { cb(null); };
+  img.src = dataUrl;
+}
+function onFile(ev) {
+  var f = ev.target.files && ev.target.files[0];
+  if (!f) { return; }
+  var r = new FileReader();
+  r.onloadend = function () {
+    compress(r.result, function (d, quality) {
+      if (!d) { S.err = 'No se pudo leer la imagen.'; } else { 
+        S.img = d; S.err = ''; 
+        if (quality === 'low') { S.err = 'Calidad de imagen posiblemente baja (desenfoque o iluminación deficiente). La impresión será menos fiable.'; }
+      }
+      renderImgBox(); renderGo(); renderErr();
+    });
+  };
+  r.readAsDataURL(f);
+  ev.target.value = '';
+}
+
+/* ---------- API de Gemini ---------- */
+var SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    condition: {type: 'STRING', description: 'Impresión diagnóstica orientativa en castellano médico (no definitiva)'},
+    category: {type: 'STRING', enum: ['benigna', 'premaligna', 'basocelular', 'epidermoide', 'melanoma', 'inflamatoria', 'infecciosa', 'indeterminada'], description: 'Categoría cerrada de la impresión principal; indeterminada si no se puede decidir'},
+    referral: {type: 'STRING', enum: ['Routine', 'Priority', 'Urgent'], description: 'Urgencia de derivación a dermatología'},
+    differentialDiagnoses: {type: 'ARRAY', items: {type: 'STRING'}, description: 'Lista de 3-4 diagnósticos diferenciales en castellano'},
+    recommendation: {type: 'STRING', description: 'Guía de actuación clínica en castellano'},
+    icd10: {type: 'STRING', description: 'Código CIE-10'},
+    riskLevel: {type: 'STRING', enum: ['Low', 'Medium', 'High', 'Critical'], description: 'Nivel de riesgo clínico'},
+    features: {type: 'ARRAY', items: {type: 'STRING'}, description: 'Hallazgos visuales específicos en castellano'},
+    visualComparison: {type: 'STRING', description: 'Descripción de un caso prototípico para comparación del médico'},
+    uncertainty_notes: {type: 'STRING', description: 'Notas de incertidumbre, limitaciones o hallazgos contradictorios'}
+  },
+  required: ['condition', 'category', 'referral', 'recommendation', 'riskLevel', 'icd10', 'visualComparison', 'features', 'uncertainty_notes']
+};
+
+function prov() { return S.cfg.provider; }
+function secret(p) { p = p || prov(); return S.secrets[p] || ''; }
+function modelName(p) { p = p || prov(); return S.cfg.models[p === 'proxy' ? 'gemini' : p] || ''; }
+function localBase(u) { return /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(u || ''); }
+function friendly(status, msg, p) {
+  var m = String(msg || '').slice(0, 200);
+  if (status === 400 && /api key/i.test(m)) { return 'Clave de API no válida. Revísala en Ajustes.'; }
+  if (status === 401) { return 'Clave o código de acceso incorrecto o ausente. Revísalo en Ajustes.'; }
+  if (status === 403) { return 'Acceso denegado (clave sin permiso, restringida o ruta no permitida).' + (m ? ' ' + m : ''); }
+  if (status === 404) { return 'Modelo o ruta no encontrados: ' + modelName(p) + '. Revisa el nombre del modelo y la URL en Ajustes.'; }
+  if (status === 429) { return 'Límite de peticiones o de saldo alcanzado. Espera o revisa tu cuenta.'; }
+  return 'Error ' + status + (m ? ': ' + m : '');
+}
+function jsonSpec() {
+  return '\nDevuelve únicamente un objeto JSON (sin texto adicional ni bloques de código) con estas claves: condition (string), category (exactamente una de: benigna, premaligna, basocelular, epidermoide, melanoma, inflamatoria, infecciosa, indeterminada), differentialDiagnoses (array de 3-4 strings), recommendation (string, en castellano), referral (exactamente uno de: Routine, Priority, Urgent), icd10 (string), riskLevel (exactamente uno de: Low, Medium, High, Critical), features (array de strings), visualComparison (string), uncertainty_notes (string con limitaciones e incertidumbre).';
+}
+// Construye la petición según el proveedor. img = dataURL JPEG o null (prueba de conexión).
+function buildRequest(prompt, img, pv) {
+  var p = pv || prov(), c = S.cfg, b64 = img ? img.split(',')[1] : null, u, h, body, base;
+  if (p === 'gemini' || p === 'proxy') {
+    var parts = [{text: prompt}];
+    if (b64) { parts.push({inlineData: {mimeType: 'image/jpeg', data: b64}}); }
+    body = {contents: [{role: 'user', parts: parts}]};
+    if (b64) {
+      body.generationConfig = {responseMimeType: 'application/json', responseSchema: SCHEMA, thinkingConfig: {thinkingLevel: c.thinking}};
+      if (c.grounding) { body.tools = [{googleSearch: {}}]; }
+    } else { body.generationConfig = {maxOutputTokens: 20}; }
+    if (p === 'proxy') {
+      base = String(c.proxyUrl || '').replace(/\/+$/, '');
+      if (!/^https:\/\//i.test(base)) { return {error: 'La URL del proxy debe empezar por https://. Revísala en Ajustes.'}; }
+      h = {'Content-Type': 'application/json', 'x-app-token': secret(p)};
+    } else {
+      base = 'https://generativelanguage.googleapis.com';
+      h = {'Content-Type': 'application/json', 'x-goog-api-key': secret(p)};
+    }
+    u = base + '/v1beta/models/' + encodeURIComponent(modelName(p)) + ':generateContent';
+    return {url: u, headers: h, body: body};
+  }
+  if (kind(p) === 'openai') {
+    base = String(PRESET_BASE[p] || c.openaiBase || '').replace(/\/+$/, '');
+    if (!(/^https:\/\//i.test(base) || localBase(base))) { return {error: 'La URL base debe empezar por https:// (o ser localhost). Revísala en Ajustes.'}; }
+    var content = b64 ? [{type: 'text', text: prompt}, {type: 'image_url', image_url: {url: img}}] : prompt;
+    body = {model: modelName(p), messages: [{role: 'user', content: content}]};
+    if (b64 && c.jsonMode) { body.response_format = {type: 'json_object'}; }
+    h = {'Content-Type': 'application/json'};
+    if (secret(p)) { h.Authorization = 'Bearer ' + secret(p); }
+    return {url: base + '/chat/completions', headers: h, body: body};
+  }
+  // anthropic
+  var cont = [];
+  if (b64) { cont.push({type: 'image', source: {type: 'base64', media_type: 'image/jpeg', data: b64}}); }
+  cont.push({type: 'text', text: prompt});
+  body = {model: modelName(p), max_tokens: b64 ? 2048 : 20, messages: [{role: 'user', content: cont}]};
+  return {url: 'https://api.anthropic.com/v1/messages', headers: {'Content-Type': 'application/json', 'x-api-key': secret(p), 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true'}, body: body};
+}
+// Normaliza la respuesta: {text, sources, block}
+function parseResponse(j, pv) {
+  var p = pv || prov(), out = {text: '', sources: [], block: ''}, i, c, parts, ch;
+  if (p === 'gemini' || p === 'proxy') {
+    c = j && j.candidates && j.candidates[0]; parts = c && c.content && c.content.parts;
+    if (parts) { for (i = 0; i < parts.length; i++) { if (parts[i].text && !parts[i].thought) { out.text += parts[i].text; } } }
+    ch = c && c.groundingMetadata && c.groundingMetadata.groundingChunks;
+    if (ch) { for (i = 0; i < ch.length; i++) { if (ch[i].web && /^https?:\/\//i.test(ch[i].web.uri || '')) { out.sources.push({title: ch[i].web.title || 'Fuente', uri: ch[i].web.uri}); } } out.sources = out.sources.slice(0, 8); }
+    out.block = (j && j.promptFeedback && j.promptFeedback.blockReason) || '';
+  } else if (kind(p) === 'openai') {
+    c = j && j.choices && j.choices[0]; var m = c && c.message && c.message.content;
+    if (typeof m === 'string') { out.text = m; }
+    else if (m instanceof Array) { for (i = 0; i < m.length; i++) { if (m[i] && m[i].text) { out.text += m[i].text; } } }
+    out.block = (c && c.finish_reason === 'content_filter') ? 'content_filter' : ((c && c.message && c.message.refusal) ? 'refusal' : '');
+  } else {
+    parts = j && j.content;
+    if (parts instanceof Array) { for (i = 0; i < parts.length; i++) { if (parts[i].type === 'text' && parts[i].text) { out.text += parts[i].text; } } }
+    out.block = (j && j.stop_reason === 'refusal') ? 'refusal' : '';
+  }
+  return out;
+}
+function callLLM(prompt, img, cb, pv) {
+  var p = pv || prov();
+  var needKey = !(p === 'openai' && localBase(S.cfg.openaiBase));
+  if (needKey && !secret(p)) { cb({message: p === 'proxy' ? 'Falta el código de acceso. Introdúcelo en Ajustes.' : 'Falta la clave de API de ' + PROVIDERS[p] + '. Introdúcela en Ajustes.'}); return; }
+  if (!modelName(p)) { cb({message: 'Falta el nombre del modelo de ' + PROVIDERS[p] + '. Indícalo en Ajustes.'}); return; }
+  var rq = buildRequest(prompt, img, p);
+  if (rq.error) { cb({message: rq.error}); return; }
+  var done = false, tm, ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  if (ctl) { S.ctls.push(ctl); }
+  function finish(e, d) {
+    if (done) { return; } done = true; window.clearTimeout(tm);
+    var ix = S.ctls.indexOf(ctl); if (ix > -1) { S.ctls.splice(ix, 1); }
+    cb(e, d);
+  }
+  tm = window.setTimeout(function () { if (ctl) { ctl.abort(); } finish({message: 'Tiempo de espera agotado. Inténtalo con otra imagen o más tarde.'}); }, 120000);
+  var opts = {method: 'POST', headers: rq.headers, body: JSON.stringify(rq.body), referrerPolicy: 'no-referrer', cache: 'no-store'};
+  if (ctl) { opts.signal = ctl.signal; }
+  fetch(rq.url, opts).then(function (r) {
+    return r.text().then(function (t) {
+      var j = null; try { j = JSON.parse(t); } catch (e) { j = null; }
+      if (!r.ok) {
+        var em = j && j.error && (typeof j.error === 'string' ? j.error : j.error.message);
+        finish({message: friendly(r.status, em, p)}); return;
+      }
+      finish(null, parseResponse(j, p));
+    });
+  }, function () { finish({message: 'No se pudo conectar. Revisa la conexión y la URL del servicio (algunos servicios no admiten llamadas desde el navegador).'}); });
+}
+function cancelCall() {
+  S.cancelled = true;
+  S.ctls.slice().forEach(function (c) { try { c.abort(); } catch (e) { /* nada */ } });
+  busy(false);
+}
+function buildPrompt(f) {
+  return 'Actúa como un médico dermatólogo experto en teledermatología para Atención Primaria.\n' +
+    'Analiza la imagen de la lesión cutánea adjunta considerando el contexto clínico:\n' +
+    '- PACIENTE: ' + f.age + ' años, sexo ' + f.sex + '.\n' +
+    '- FOTOTIPO (Fitzpatrick): ' + (f.phototype || 'no indicado') + '.\n' +
+    '- LOCALIZACIÓN: ' + f.loc + '.\n' +
+    '- TIEMPO DE EVOLUCIÓN: ' + f.evol + ' meses.\n' +
+    '- TAMAÑO: ' + f.size + ' mm.\n' +
+    '- SANGRADO: ' + (f.bleed ? 'SÍ' : 'NO') + '.\n' +
+    '- PRURITO: ' + (f.itch ? 'SÍ' : 'NO') + '.\n' +
+    '- CONTACTO ANIMAL: ' + (f.animal ? 'SÍ' : 'NO') + '.\n' +
+    '- EXPOSICIÓN SOLAR: ' + (f.sun ? 'SÍ' : 'NO') + '.\n' +
+    '- DERMATOSCOPIA: ' + (f.dermo === 'mel' ? 'sugiere melanoma' : f.dermo === 'doubt' ? 'dudosa' : f.dermo === 'benign' ? 'benigna clara' : 'no realizada') + '.\n' +
+    '- CRITERIOS DERMAGUÍA MARCADOS: cambio tamaño=' + (f.sp_size?'sí':'no') + ', forma irregular=' + (f.sp_shape?'sí':'no') + ', color irregular=' + (f.sp_color?'sí':'no') + ', ≥7mm=' + (f.sp_diam?'sí':'no') + ', EFG=' + (f.efg?'sí':'no') + ', Hutchinson=' + (f.hutch?'sí':'no') + ', patito feo=' + (f.ugly?'sí':'no') + '.\n\n' +
+    'Eres una ayuda educativa, no un diagnóstico: usa siempre lenguaje de incertidumbre (impresión orientativa, no diagnóstico). No des cifras de probabilidad ni certeza.\n' +
+    'Incluye al menos un hallazgo o factor que podría contradecir la hipótesis principal.\n' +
+    'Prioriza la sensibilidad ante cáncer cutáneo: si hay una duda razonable de malignidad (melanoma, carcinoma basocelular o epidermoide), asigna riesgo High o Critical y recomienda siempre valoración dermatológica ante cualquier duda.\n' +
+    'Clasifica la lesión en category usando SOLO una de estas categorías cerradas: benigna, premaligna, basocelular, epidermoide, melanoma, inflamatoria, infecciosa, indeterminada (usa indeterminada si no puedes decidir). En referral indica la urgencia de derivación: Routine, Priority o Urgent.\n' +
+    'Retorna un objeto JSON siguiendo estrictamente el esquema proporcionado, incluyendo los campos category, referral y uncertainty_notes.';
+}
+function parseAnalysis(txt) {
+  var s = String(txt || ''), a, i = s.indexOf('{'), j = s.lastIndexOf('}');
+  if (i < 0 || j <= i) { return null; }
+  try { a = JSON.parse(s.slice(i, j + 1)); } catch (e) { return null; }
+  if (!a || typeof a.condition !== 'string' || !RISK[a.riskLevel]) { return null; }
+  a.differentialDiagnoses = a.differentialDiagnoses instanceof Array ? a.differentialDiagnoses : [];
+  a.features = a.features instanceof Array ? a.features : [];
+  a.recommendation = String(a.recommendation || '');
+  a.icd10 = String(a.icd10 || '');
+  a.visualComparison = String(a.visualComparison || '');
+  a.uncertainty_notes = String(a.uncertainty_notes || '');
+  a.category = CATS[a.category] ? a.category : 'indeterminada';
+  a.referral = REFERRAL[a.referral] ? a.referral : '';
+  return a;
+}
+
+/* ---------- Análisis ---------- */
+function busy(on, txt) {
+  busyEl.style.display = on ? 'flex' : 'none';
+  if (txt) { el('busyTxt').textContent = txt; }
+}
+// Regla local determinista (sin IA): lista de 7 puntos simplificada + signos de alarma. Solo puede SUBIR el riesgo.
+function localRule(d) {
+  var pts = (d.sp_size ? 2 : 0) + (d.sp_shape ? 2 : 0) + (d.sp_color ? 2 : 0) + (d.sp_diam ? 1 : 0), flags = [];
+  if (d.dermo === 'mel') { flags.push('dermatoscopia sugiere melanoma'); }
+  if (d.efg) { flags.push('EFG positivo'); }
+  if (d.hutch) { flags.push('signo de Hutchinson'); }
+  return {pts: pts, flags: flags, fired: pts >= 3 || flags.length > 0};
+}
+function applyRule(rec, rule) {
+  rec.rule = rule;
+  if (rule.fired && RISK_ORDER[rec.analysis.riskLevel] < RISK_ORDER.High) { rec.analysis.riskAI = rec.analysis.riskLevel; rec.analysis.riskLevel = 'High'; rec.riskRaised = true; }
+}
+function aggregateAnalyses(results) {
+  var valid = [], failed = [], i, r;
+  for (i = 0; i < results.length; i++) {
+    r = results[i];
+    if (r && r.analysis) { valid.push(r); }
+    else if (r) { failed.push({provider: r.provider, error: r.error || (r.block ? 'rechazado (' + r.block + ')' : 'respuesta con formato no válido')}); }
+  }
+  if (!valid.length) { return {none: true, failed: failed}; }
+  function catOf(v) { return v.analysis.category || 'indeterminada'; }
+  var catCount = {}, modal = null, mc = 0, mv = 0, highest = valid[0], lowest = valid[0], maxRef = '';
+  valid.forEach(function (v) {
+    catCount[catOf(v)] = (catCount[catOf(v)] || 0) + 1;
+    if (MALIGN[catOf(v)]) { mv++; }
+    if (RISK_ORDER[v.analysis.riskLevel] > RISK_ORDER[highest.analysis.riskLevel]) { highest = v; }
+    if (RISK_ORDER[v.analysis.riskLevel] < RISK_ORDER[lowest.analysis.riskLevel]) { lowest = v; }
+    if (v.analysis.referral && (!maxRef || REF_ORDER[v.analysis.referral] > REF_ORDER[maxRef])) { maxRef = v.analysis.referral; }
+  });
+  CAT_ORDER.forEach(function (c) { if ((catCount[c] || 0) > mc) { mc = catCount[c]; modal = c; } }); // empate: gana la categoría más grave
+  var n = valid.length, level = n === 1 ? 'unico' : (mc === n ? 'total' : (mc > n / 2 ? 'mayoria' : 'ninguno'));
+  var inModal = valid.filter(function (v) { return catOf(v) === modal; }).sort(function (a, b) { return RISK_ORDER[b.analysis.riskLevel] - RISK_ORDER[a.analysis.riskLevel]; });
+  var cc = {}, orig = {}, bestKey = null, bc = 0, ic = {}, bestIcd = '', bi = 0;
+  inModal.forEach(function (v) {
+    var k = norm(v.analysis.condition), ik = String(v.analysis.icd10 || '').toUpperCase().trim();
+    cc[k] = (cc[k] || 0) + 1; if (!orig[k]) { orig[k] = v.analysis.condition; } if (cc[k] > bc) { bc = cc[k]; bestKey = k; }
+    if (ik) { ic[ik] = (ic[ik] || 0) + 1; if (ic[ik] > bi) { bi = ic[ik]; bestIcd = ik; } }
+  });
+  var dc = {}, dorig = {}, dorder = [], fseen = {}, feats = [], unc = [];
+  valid.forEach(function (v) {
+    v.analysis.differentialDiagnoses.forEach(function (d) { var k = norm(d); if (!k) { return; } if (!dc[k]) { dc[k] = 0; dorig[k] = d; dorder.push(k); } dc[k]++; });
+    v.analysis.features.forEach(function (f) { var k = norm(f); if (k && !fseen[k]) { fseen[k] = 1; feats.push(f); } });
+    if (v.analysis.uncertainty_notes) { unc.push(v.provider + ': ' + v.analysis.uncertainty_notes); }
+  });
+  dorder.sort(function (a, b) { return dc[b] - dc[a]; });
+  if (level !== 'total') {
+    unc.unshift('Los modelos no coinciden en la categoría (' + Object.keys(catCount).map(function (c) { return CATS[c] + ' ×' + catCount[c]; }).join(', ') + ').');
+  }
+  return {
+    analysis: {
+      condition: orig[bestKey] || highest.analysis.condition,
+      category: modal,
+      referral: maxRef,
+      differentialDiagnoses: dorder.slice(0, 4).map(function (k) { return dorig[k]; }),
+      recommendation: highest.analysis.recommendation,
+      icd10: bestIcd,
+      riskLevel: highest.analysis.riskLevel,
+      features: feats.slice(0, 8),
+      visualComparison: highest.analysis.visualComparison,
+      uncertainty_notes: unc.join('\n')
+    },
+    consensus: {n: n, total: results.length, modal: modal, modalCount: mc, level: level, dissent: (mv > 0 && mv < n), riskMin: lowest.analysis.riskLevel, riskMax: highest.analysis.riskLevel, cats: catCount},
+    failed: failed,
+    individuals: valid.map(function (v) { return {provider: v.provider, model: v.model, analysis: v.analysis}; }),
+    sources: highest.sources || []
+  };
+}
+
+function startAnalysis() {
+  var f = S.form;
+  S.err = '';
+  if (!S.img) { return; }
+  if (!f.loc.replace(/\s/g, '') || f.age === '' || !f.sex) { S.err = 'Completa los datos obligatorios: edad, sexo y localización.'; renderErr(); return; }
+  if (!S.consent) { S.err = 'Confirma que la imagen y los datos no son identificables antes de analizar.'; renderErr(); return; }
+  var data = {age: Number(f.age), sex: f.sex, loc: f.loc.trim(), evol: f.evol === '' ? 0 : Number(f.evol), size: f.size === '' ? 0 : Number(f.size), phototype: f.phototype || '', dermo: f.dermo || 'na', animal: f.animal, sun: f.sun, bleed: f.bleed, itch: f.itch, sp_size: f.sp_size, sp_shape: f.sp_shape, sp_color: f.sp_color, sp_diam: f.sp_diam, efg: f.efg, hutch: f.hutch, ugly: f.ugly};
+  S.cancelled = false;
+  var rule = localRule(data), img = S.img, base = buildPrompt(data);
+  function promptFor(p) { return base + ((kind(p) === 'openai' || p === 'anthropic') ? jsonSpec() : ''); }
+  function store(rec) {
+    applyRule(rec, rule);
+    S.history.unshift(rec); saveHistory();
+    S.current = rec; S.currentImg = img;
+    S.img = null; S.consent = false; S.form = emptyForm();
+    render();
+  }
+  if (S.cfg.consensus && S.cfg.consensusProviders && S.cfg.consensusProviders.length > 1) {
+    var provs = S.cfg.consensusProviders.slice();
+    busy(true, 'Consultando ' + provs.length + ' modelos en paralelo…');
+    Promise.all(provs.map(function (pName) {
+      return new Promise(function (resolve) {
+        callLLM(promptFor(pName), img, function (e, r) {
+          if (e) { resolve({provider: pName, error: e.message}); return; }
+          resolve({provider: pName, analysis: parseAnalysis(r.text), sources: r.sources, model: modelName(pName), block: r.block});
+        }, pName);
+      });
+    })).then(function (results) {
+      if (S.cancelled) { return; }
+      busy(false);
+      var agg = aggregateAnalyses(results);
+      if (agg.none) {
+        S.err = 'Ningún modelo devolvió un análisis válido. ' + agg.failed.map(function (x) { return PROVIDERS[x.provider] + ': ' + x.error; }).join(' · ');
+        renderErr(); return;
+      }
+      store({id: uid(), timestamp: Date.now(), patientData: patientOf(data), analysis: agg.analysis, sources: agg.sources, provider: 'consenso', model: 'multi', consensus: agg.consensus, failed: agg.failed, individuals: agg.individuals});
+    });
+  } else {
+    busy(true, 'Analizando…');
+    callLLM(promptFor(prov()), img, function (e, r) {
+      if (S.cancelled) { return; }
+      busy(false);
+      if (e) { S.err = e.message; renderErr(); return; }
+      var a = parseAnalysis(r.text);
+      if (!a) {
+        S.err = r.block ? 'La imagen fue rechazada por el servicio (' + r.block + ').' : 'La respuesta de la IA no tuvo el formato esperado. Inténtalo de nuevo.';
+        renderErr(); return;
+      }
+      store({id: uid(), timestamp: Date.now(), patientData: patientOf(data), analysis: a, sources: r.sources, provider: prov(), model: modelName()});
+    });
+  }
+}
+
+/* ---------- Vistas ---------- */
+function riskBox(level, raisedFrom) {
+  var r = riskOf(level), h = '<div class="risk ' + r.cls + '"><div class="t">Nivel de riesgo orientativo</div><div class="v">' + r.es + '</div><div class="segs" aria-hidden="true">', i;
+  for (i = 1; i <= 4; i++) { h += '<i class="' + (i <= r.n ? 'on' : '') + '"></i>'; }
+  h += '</div>';
+  if (raisedFrom) { h += '<div class="small" style="color:inherit;font-weight:700">Elevado por la regla local (la IA indicaba ' + riskOf(raisedFrom).es + ').</div>'; }
+  return h + '<div class="small" style="color:inherit">Estimación cualitativa de modelos generalistas sin validar. No indica probabilidad de acierto.</div></div>';
+}
+function consensusHtml(rec) {
+  var c = rec.consensus, rl = rec.rule, h = '', i, ind, a, fl;
+  if (rl) {
+    h += '<div class="card"><h2>Regla local DermaGuía</h2><p class="sub">Calculada en el dispositivo, sin IA. Solo puede subir el riesgo, nunca bajarlo.</p>';
+    h += '<div class="' + (rl.fired ? 'err' : 'ok') + '">' + (rl.fired ? 'ACTIVADA: valoración dermatológica. ' : 'No activada. ') + 'Puntos: ' + rl.pts + ' (umbral ≥ 3)' + (rl.flags.length ? ' · ' + esc(rl.flags.join(', ')) : '') + '</div></div>';
+  }
+  if (!c) { return h; }
+  h += '<div class="card"><h2>Consenso entre modelos</h2>';
+  if (c.level === 'total') { h += '<div class="ok">Los ' + c.n + ' modelos coinciden en la categoría: ' + esc(CATS[c.modal]) + '.</div>'; }
+  else if (c.level === 'mayoria') { h += '<div class="err">Mayoría ' + c.modalCount + '/' + c.n + ' en «' + esc(CATS[c.modal]) + '». Hay discrepancia; revisa cada respuesta.</div>'; }
+  else if (c.level === 'unico') { h += '<div class="err">Solo respondió 1 modelo: no hay consenso.</div>'; }
+  else { h += '<div class="err">Sin consenso: cada modelo propone una categoría distinta. Se muestra el riesgo más alto por seguridad.</div>'; }
+  if (c.dissent) { h += '<div class="err">Discrepancia benigno/maligno: al menos un modelo ve malignidad y otro no.</div>'; }
+  h += '<p class="small">Riesgo entre modelos: ' + riskOf(c.riskMin).es + (c.riskMin === c.riskMax ? '' : ' – ' + riskOf(c.riskMax).es) + ' (se aplica el más alto). Coincidir no es acertar: los modelos comparten datos de entrenamiento y sesgos.</p>';
+  for (i = 0; i < (rec.individuals || []).length; i++) {
+    ind = rec.individuals[i]; a = ind.analysis;
+    h += '<div style="border-top:1px solid var(--line);padding:10px 0"><b>' + esc(PROVIDERS[ind.provider] || ind.provider) + '</b> <span class="small">' + esc(ind.model || '') + '</span><div>' + esc(a.condition) + '</div>' +
+      '<span class="tag">' + esc(CATS[a.category] || '—') + '</span><span class="tag ' + riskOf(a.riskLevel).cls + '">Riesgo ' + riskOf(a.riskLevel).es + '</span>' + (a.referral ? '<span class="tag">Derivación ' + esc(REFERRAL[a.referral]) + '</span>' : '') +
+      '<details style="margin-top:4px"><summary class="small">Recomendación de este modelo</summary><div class="md">' + md(a.recommendation) + '</div></details></div>';
+  }
+  if (rec.failed && rec.failed.length) {
+    fl = rec.failed.map(function (x) { return (PROVIDERS[x.provider] || x.provider) + ' (' + x.error + ')'; });
+    h += '<div class="err">No respondieron: ' + esc(fl.join(' · ')) + '</div>';
+  }
+  return h + '</div>';
+}
+function chip(k, label) { return '<button type="button" class="chip" data-tog="' + k + '" aria-pressed="' + (S.form[k] ? 'true' : 'false') + '">' + label + '</button>'; }
+
+function viewNew() {
+  if (S.current) { return viewResult(S.current, S.currentImg); }
+  var f = S.form, h = '';
+  h += '<div class="card"><h2>1 · Contexto clínico</h2><p class="sub">Edad, sexo y localización son obligatorios. No escribas datos identificativos.</p><div class="grid">';
+  h += '<div><label class="l" for="fAge">Edad (años)</label><input type="number" inputmode="numeric" id="fAge" min="0" max="120" value="' + esc(f.age) + '"></div>';
+  h += '<div><label class="l" for="fSex">Sexo biológico</label><select id="fSex"><option value=""' + (f.sex ? '' : ' selected') + ' disabled>Seleccionar…</option>';
+  ['Masculino', 'Femenino', 'Otro'].forEach(function (s) { h += '<option value="' + s + '"' + (f.sex === s ? ' selected' : '') + '>' + s + '</option>'; });
+  h += '</select></div>';
+  h += '<div><label class="l" for="fLoc">Localización</label><input type="text" id="fLoc" placeholder="Ej.: región escapular" autocomplete="off" value="' + esc(f.loc) + '"></div>';
+  h += '<div><label class="l" for="fEvol">Evolución (meses)</label><input type="number" inputmode="numeric" id="fEvol" min="0" value="' + esc(f.evol) + '"></div>';
+  h += '<div><label class="l" for="fSize">Tamaño (mm)</label><input type="number" inputmode="numeric" id="fSize" min="0" value="' + esc(f.size) + '"></div>';
+  h += '<div style="grid-column:1/-1"><label class="l">Fototipo (Fitzpatrick) — referencia de color</label><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:6px">';
+  var photoColors = [
+    {v:'I', c:'#F8E8DC', t:'I · Muy clara'},
+    {v:'II', c:'#F0D0B0', t:'II · Clara'},
+    {v:'III', c:'#E0B080', t:'III · Media'},
+    {v:'IV', c:'#C08050', t:'IV · Moderada'},
+    {v:'V', c:'#8B4A20', t:'V · Oscura'},
+    {v:'VI', c:'#4A2810', t:'VI · Muy oscura'}
+  ];
+  photoColors.forEach(function (pt) {
+    var on = f.phototype === pt.v ? 'border:2.5px solid var(--brand);' : 'border:1.5px solid var(--line);';
+    h += '<label style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:64px;border-radius:10px;padding:6px 4px;cursor:pointer;background:' + pt.c + ';color:#16282A;' + on + 'font-size:13px;font-weight:600;text-align:center;line-height:1.2"><input type="radio" name="photo" value="' + pt.v + '"' + (f.phototype === pt.v ? ' checked' : '') + ' style="display:none"> ' + pt.t + '</label>';
+  });
+  h += '</div></div>';
+  h += '</div><div class="chips">' + chip('bleed', 'Sangrado') + chip('itch', 'Picor') + chip('sun', 'Exposición solar') + chip('animal', 'Contacto con animales') + '</div>';
+  h += '<div style="margin-top:12px"><label class="l">Dermatoscopia (si disponible)</label><select id="fDermo"><option value="na"' + (f.dermo === 'na' ? ' selected' : '') + '>No realizada / no disponible</option><option value="benign"' + (f.dermo === 'benign' ? ' selected' : '') + '>Benigna clara</option><option value="doubt"' + (f.dermo === 'doubt' ? ' selected' : '') + '>Dudosa</option><option value="mel"' + (f.dermo === 'mel' ? ' selected' : '') + '>Sugiere melanoma</option></select></div>';
+  h += '<div style="margin-top:12px"><label class="l">Criterios DermaGuía (marca los presentes)</label><div class="chips">';
+  h += chip('sp_size', 'Cambio tamaño (2p)') + chip('sp_shape', 'Forma irregular (2p)') + chip('sp_color', 'Color irregular (2p)') + chip('sp_diam', '≥7 mm (1p)') + chip('efg', 'EFG positivo') + chip('hutch', 'Hutchinson') + chip('ugly', 'Patito feo');
+  h += '</div></div>';
+  h += '<p class="small">Nota: el rendimiento de muchos modelos de IA es inferior en pieles oscuras (fototipos IV–VI). La impresión es aún más orientativa en esos casos.</p></div>';
+  h += '<div class="card"><h2>2 · Imagen</h2><p class="sub">Encuadra solo la lesión. Luz natural difusa, distancia macro, incluye escala si es posible. Se reduce a 800 px y se eliminan los metadatos (GPS, fecha, dispositivo). Calidad baja puede reducir la fiabilidad.</p><div id="imgBox"></div></div>';
+  h += '<div id="goBox"></div><div id="errBox"></div>';
+  return h;
+}
+function renderImgBox() {
+  var b = el('imgBox'); if (!b) { return; }
+  if (S.img) {
+    b.innerHTML = '<div class="prev"><img src="' + S.img + '" alt="Lesión"></div><button type="button" class="btn alt" data-act="rmimg">Quitar imagen</button>';
+  } else {
+    b.innerHTML = '<div class="pick"><button type="button" class="btn" data-act="cam">Hacer foto</button><button type="button" class="btn alt" data-act="gal">Elegir de la galería</button></div>';
+  }
+}
+function renderGo() {
+  var b = el('goBox'); if (!b) { return; }
+  if (!S.img) { b.innerHTML = ''; return; }
+  b.innerHTML = '<label class="consent"><input type="checkbox" id="cConsent"' + (S.consent ? ' checked' : '') + '><span>La imagen no muestra rostro ni rasgos identificables (tatuajes, joyas, rótulos), no he escrito datos identificativos y sé que la imagen se envía a ' + (S.cfg.consensus && S.cfg.consensusProviders.length > 1 ? S.cfg.consensusProviders.length + ' servicios de IA externos (' + S.cfg.consensusProviders.map(function (x) { return PROVIDERS[x]; }).join(', ') + ')' : 'un servicio de IA externo') + ' para este análisis.</span></label>' +
+    '<button type="button" class="btn big" id="bGo" data-act="go"' + (S.consent ? '' : ' disabled') + '>Obtener impresión orientativa</button>';
+}
+function renderErr() {
+  var b = el('errBox'); if (!b) { return; }
+  b.innerHTML = S.err ? '<div class="err" role="alert">' + esc(S.err) + '</div>' : '';
+}
+
+function reportText(rec) {
+  var a = rec.analysis, p = rec.patientData || {};
+  return 'IMPRESIÓN ORIENTATIVA - DermaScan AI (apoyo educativo, no diagnóstico)\n' +
+    '-----------------------------------\n' +
+    'FECHA: ' + new Date(rec.timestamp).toLocaleString('es-ES') + '\n' +
+    'PACIENTE: ' + p.age + ' años, ' + p.sex + '\n' +
+    'LOCALIZACIÓN: ' + p.location + '\n' +
+    'IMPRESIÓN IA: ' + a.condition + (a.icd10 ? ' (' + a.icd10 + ')' : '') + '\n' +
+    'RIESGO ORIENTATIVO: ' + riskOf(a.riskLevel).es + (rec.riskRaised ? ' (elevado por regla local)' : '') + '\n' +
+    (rec.consensus ? 'CONSENSO: ' + rec.consensus.n + ' modelos · categoría ' + CATS[rec.consensus.modal] + ' (' + rec.consensus.modalCount + '/' + rec.consensus.n + ')' + (rec.consensus.level !== 'total' ? ' · DISCREPANCIA' : '') + '\n' : '') +
+    (rec.rule ? 'REGLA LOCAL: ' + rec.rule.pts + ' puntos' + (rec.rule.fired ? ' · activada' : ' · no activada') + '\n' : '') + '\n' +
+    'ORIENTACIÓN:\n' + a.recommendation + '\n\n' +
+    'Generado por un modelo de IA generalista sin marcado CE ni validación clínica. Requiere confirmación por el médico.';
+}
+function viewResult(rec, img) {
+  var a = rec.analysis, p = rec.patientData || {}, fb = rec.userFeedback, h = '', i;
+  h += '<p><button type="button" class="btn alt" data-act="back">← Nuevo análisis</button></p>';
+  h += '<div class="card"><p class="small" style="margin:0">Impresión orientativa de la IA</p><h2 style="font-size:24px;margin:2px 0 6px">' + esc(a.condition) + '</h2>';
+  h += '<div class="small">CIE-10: ' + esc(a.icd10 || '—') + ' · ' + new Date(rec.timestamp).toLocaleString('es-ES') + '</div>' + riskBox(a.riskLevel, rec.riskRaised ? a.riskAI : '') + (a.category ? '<span class="tag">' + esc(CATS[a.category] || '') + '</span>' : '') + (a.referral ? '<span class="tag">Derivación ' + esc(REFERRAL[a.referral]) + '</span>' : '');
+  h += '<div class="kv"><div><b>Paciente</b>' + esc(p.age) + ' a, ' + esc(p.sex) + (p.phototype ? ' · FT ' + esc(p.phototype) : '') + '</div><div><b>Región</b>' + esc(p.location) + '</div><div><b>Tamaño</b>' + esc(p.sizeMm) + ' mm</div><div><b>Evolución</b>' + esc(p.evolutionTime) + ' m</div></div></div>';
+  h += consensusHtml(rec);
+  if (img) { h += '<div class="card"><h2>Imagen</h2><p class="sub">Solo en memoria: se borra al cerrar o recargar. Toca para ampliar.</p><div class="prev big"><img src="' + img + '" alt="Lesión" data-act="zoom"></div></div>'; }
+  else { h += '<div class="card"><p class="small" style="margin:0">La imagen no se guarda en este dispositivo.</p></div>'; }
+  h += '<div class="card"><h2>Orientación (a confirmar por el médico)</h2>' + (rec.consensus ? '<p class="small">Recomendación del modelo con mayor riesgo; el resto, en «Consenso entre modelos».</p>' : '') + '<div class="md">' + md(a.recommendation) + '</div>';
+  if (a.features.length) { h += '<h3>Hallazgos morfológicos</h3>'; for (i = 0; i < a.features.length; i++) { h += '<span class="tag">' + esc(a.features[i]) + '</span>'; } }
+  if (a.differentialDiagnoses.length) { h += '<h3>Diagnóstico diferencial</h3><ul>'; for (i = 0; i < a.differentialDiagnoses.length; i++) { h += '<li>' + esc(a.differentialDiagnoses[i]) + '</li>'; } h += '</ul>'; }
+  if (a.visualComparison) { h += '<h3>Caso prototípico (descripción)</h3><p>' + esc(a.visualComparison) + '</p>'; }
+  if (a.uncertainty_notes) { h += '<h3>Notas de incertidumbre</h3><p>' + esc(a.uncertainty_notes) + '</p>'; }
+  if (rec.sources && rec.sources.length) {
+    h += '<h3>Fuentes citadas por la IA</h3><ul>';
+    for (i = 0; i < rec.sources.length; i++) { h += '<li><a class="link" href="' + esc(rec.sources[i].uri) + '" target="_blank" rel="noopener noreferrer">' + esc(rec.sources[i].title) + '</a></li>'; }
+    h += '</ul><p class="small">Las fuentes las selecciona el modelo; compruébalas antes de fiarte.</p>';
+  }
+  h += '<p><button type="button" class="btn" data-act="copyrep">Copiar informe</button><span class="small" id="cpMsg"></span></p></div>';
+  h += '<div class="card"><h2>Concordancia con tu criterio</h2>';
+  if (fb && !S.editFb) {
+    h += '<div class="ok">Valoración registrada: ' + (fb.confirmed ? 'coincide' : 'no coincide') + (fb.finalDx ? ' · diagnóstico final: ' + esc(fb.finalDx) + (fb.histology ? ' (histología)' : '') : '') + (fb.finalType ? ' · ' + (fb.finalType === 'malignant' ? 'maligna' : 'benigna') : '') + '</div><button type="button" class="btn alt" data-act="editfb">Editar</button>';
+  } else {
+    h += '<p class="sub">Indica si la impresión de la IA coincide con tu criterio. Si anotas el diagnóstico final, «Coincide» se refiere a él. Así se mide la fiabilidad real.</p>';
+    h += '<label class="l" for="fFinal">Diagnóstico final (opcional)</label><input type="text" id="fFinal" autocomplete="off" value="' + esc(fb && fb.finalDx || '') + '">';
+    h += '<label class="consent" style="margin-top:10px;background:var(--bg);color:var(--ink);border-color:var(--line)"><input type="checkbox" id="fHist"' + (fb && fb.histology ? ' checked' : '') + '><span>Confirmado por anatomía patológica</span></label>';
+    h += '<label class="l" for="fType" style="margin-top:10px">Naturaleza final (si la conoces)</label><select id="fType"><option value="">No indicada</option><option value="benign"' + (fb && fb.finalType === 'benign' ? ' selected' : '') + '>Benigna</option><option value="malignant"' + (fb && fb.finalType === 'malignant' ? ' selected' : '') + '>Maligna</option></select>';
+    if (rec.individuals && rec.individuals.length) {
+      h += '<label class="l" style="margin-top:10px">Modelos que coinciden con el diagnóstico final</label>';
+      for (i = 0; i < rec.individuals.length; i++) { h += '<label style="display:block;margin:4px 0"><input type="checkbox" class="pmChk" value="' + esc(rec.individuals[i].provider) + '"' + (fb && fb.perModel && fb.perModel[rec.individuals[i].provider] ? ' checked' : '') + '> ' + esc(rec.individuals[i].provider) + ': ' + esc(rec.individuals[i].analysis.condition) + '</label>'; }
+    }
+    h += '<p><button type="button" class="btn" data-act="fb1">Coincide</button><button type="button" class="btn alt" data-act="fb0">No coincide</button></p>';
+  }
+  return h + '</div>';
+}
+
+/* Historial y validación */
+function realCases() { var o = [], i; for (i = 0; i < S.history.length; i++) { if (S.history[i].userFeedback) { o.push(S.history[i]); } } return o; }
+function csvCell(v) { var s = String(v === undefined || v === null ? '' : v); if (/^[=+\-@\t\r]/.test(s)) { s = "'" + s; } return '"' + s.replace(/"/g, '""') + '"'; }
+function truthOf(r) {
+  var f = r.userFeedback;
+  if (!f || !f.histology) { return null; }
+  if (f.finalType) { return f.finalType === 'malignant'; }
+  if (f.finalDx) { return /melanoma|carcinoma|cáncer|malign|basocel|epiderm/i.test(f.finalDx) && !/\b(no|sin|descart)/i.test(f.finalDx); }
+  return null;
+}
+function buildCsv() {
+  var rows = realCases(), lines = ['fecha,riesgo_final,riesgo_ia,categoria_ia,consenso,regla_local,impresion_ia,cie10,coincide,diagnostico_final,histologia,naturaleza_final,riesgo_por_modelo'], i, r, f, a, ind;
+  for (i = 0; i < rows.length; i++) {
+    r = rows[i]; f = r.userFeedback; a = r.analysis;
+    ind = (r.individuals || []).map(function (x) { return x.provider + ':' + x.analysis.riskLevel + ':' + (x.analysis.category || ''); }).join('|');
+    lines.push([new Date(r.timestamp).toISOString().slice(0, 10), a.riskLevel, a.riskAI || a.riskLevel, a.category || '', r.consensus ? r.consensus.level : '', r.rule ? (r.rule.fired ? 'si' : 'no') : '', a.condition, a.icd10, f.confirmed ? 'si' : 'no', f.finalDx || '', f.histology ? 'si' : (f.finalDx ? 'no' : ''), f.finalType || '', ind].map(csvCell).join(','));
+  }
+  return lines.join('\n');
+}
+function sourceTable(rows) {
+  var src = {}, order = [], pm = {}, pmo = [], h = '', any = false;
+  function add(name, mal, flagged) {
+    if (!src[name]) { src[name] = {tp: 0, fn: 0, tn: 0, fp: 0}; order.push(name); }
+    var s = src[name]; if (mal) { if (flagged) { s.tp++; } else { s.fn++; } } else { if (flagged) { s.fp++; } else { s.tn++; } }
+  }
+  rows.forEach(function (r) {
+    var t = truthOf(r), a = r.analysis;
+    if (t !== null) {
+      any = true;
+      if (r.individuals) { r.individuals.forEach(function (x) { add(x.provider, t, hi(x.analysis.riskLevel)); }); add('Consenso (riesgo máx.)', t, hi(a.riskAI || a.riskLevel)); }
+      else { add(r.provider, t, hi(a.riskAI || a.riskLevel)); }
+      if (r.rule) { add('Regla local', t, r.rule.fired); add('Final (IA + regla)', t, hi(a.riskLevel)); }
+    }
+    if (r.userFeedback.perModel) { Object.keys(r.userFeedback.perModel).forEach(function (k) { if (!pm[k]) { pm[k] = [0, 0]; pmo.push(k); } pm[k][1]++; if (r.userFeedback.perModel[k]) { pm[k][0]++; } }); }
+  });
+  if (any) {
+    h += '<h3>Por fuente (solo casos con histología)</h3><table><thead><tr><th>Fuente</th><th>Sensibilidad</th><th>Especificidad</th></tr></thead><tbody>';
+    order.forEach(function (k) {
+      var s = src[k], nm = s.tp + s.fn, nb = s.tn + s.fp, w = nm ? wilson(s.tp, nm) : null;
+      h += '<tr><td>' + esc(PROVIDERS[k] || k) + '</td><td>' + (nm ? s.tp + '/' + nm + ' (' + pct(s.tp / nm) + ')<br><span class="small">IC ' + pct(w[0]) + '–' + pct(w[1]) + '</span>' : '—') + '</td><td>' + (nb ? s.tn + '/' + nb + ' (' + pct(s.tn / nb) + ')' : '—') + '</td></tr>';
+    });
+    h += '</tbody></table><p class="small">Positivo = riesgo Alto/Crítico (la regla local, «activada»). Si el consenso sube la sensibilidad pero baja la especificidad, el «riesgo máximo» solo está generando derivaciones.</p>';
+  }
+  if (pmo.length) {
+    h += '<h3>Coincidencia subjetiva por modelo</h3><table><thead><tr><th>Modelo</th><th>Casos</th><th>Coincide</th></tr></thead><tbody>';
+    pmo.forEach(function (k) { h += '<tr><td>' + esc(PROVIDERS[k] || k) + '</td><td>' + pm[k][1] + '</td><td>' + pm[k][0] + ' (' + pct(pm[k][0] / pm[k][1]) + ')</td></tr>'; });
+    h += '</tbody></table>';
+  }
+  return h;
+}
+function validationHtml() {
+  var rows = realCases(), n = rows.length, agree = 0, hist = 0, histAgree = 0, malig = 0, maligHigh = 0, i, g, h = '', t;
+  for (i = 0; i < n; i++) {
+    if (rows[i].userFeedback.confirmed) { agree++; }
+    t = truthOf(rows[i]);
+    if (t !== null) {
+      hist++;
+      if (rows[i].userFeedback.confirmed) { histAgree++; }
+      if (t) { malig++; if (hi(rows[i].analysis.riskLevel)) { maligHigh++; } }
+    }
+  }
+  h += '<div class="card"><h2>Validación local</h2><p class="sub">Concordancia subjetiva con tu criterio. Solo histología es referencia sólida.</p>';
+  if (!n) { return h + '<p class="small">Aún no hay casos valorados. Tras cada análisis marca «Coincide» o «No coincide» y, si lo conoces, el diagnóstico final.</p></div>'; }
+  var w = wilson(agree, n), hw = wilson(histAgree, hist);
+  var mw = malig ? wilson(maligHigh, malig) : [0, 0];
+  h += '<div class="stats"><div><b>Casos valorados</b><span class="big">' + n + '</span></div>';
+  h += '<div><b>Coincidencia subjetiva</b><span class="big">' + pct(agree / n) + '</span><span class="small">IC 95 %: ' + pct(w[0]) + ' – ' + pct(w[1]) + '</span></div>';
+  h += '<div><b>Con histología</b><span class="big">' + (hist ? pct(histAgree / hist) : '—') + '</span><span class="small">' + (hist ? 'n = ' + hist + ' · IC 95 %: ' + pct(hw[0]) + ' – ' + pct(hw[1]) : 'Sin casos con anatomía patológica') + '</span></div>';
+  h += '<div><b>Sensibilidad (malignos High/Critical)</b><span class="big">' + (malig ? pct(maligHigh / malig) : '—') + '</span><span class="small">' + (malig ? 'n = ' + malig + ' · IC 95 %: ' + pct(mw[0]) + ' – ' + pct(mw[1]) : 'Sin casos malignos confirmados') + '</span></div></div>';
+  h += '<table><thead><tr><th>Riesgo según la IA</th><th>Casos</th><th>Coinciden</th></tr></thead><tbody>';
+  ['Low', 'Medium', 'High', 'Critical'].forEach(function (lv) {
+    var c = 0, kk = 0; for (g = 0; g < n; g++) { if (rows[g].analysis.riskLevel === lv) { c++; if (rows[g].userFeedback.confirmed) { kk++; } } }
+    h += '<tr><td>' + RISK[lv].es + '</td><td>' + c + '</td><td>' + (c ? kk + ' (' + pct(kk / c) + ')' : '—') + '</td></tr>';
+  });
+  h += '</tbody></table>' + sourceTable(rows);
+  h += '<p><button type="button" class="btn" data-act="csv">Descargar CSV</button><button type="button" class="btn alt" data-act="csvcopy">Copiar CSV</button><span class="small" id="cpMsg2"></span></p>';
+  h += '<div class="small" style="margin-top:6px">Cómo leerlo: la coincidencia subjetiva no es la precisión de la IA. Sensibilidad y especificidad solo usan casos con histología y naturaleza final conocida (el selector «Naturaleza final» evita depender del texto libre). Los casos con biopsia ya son sospechosos, así que la especificidad está sesgada a la baja. Con pocos casos los intervalos de Wilson son muy amplios. El CSV no incluye datos identificativos ni imágenes.</div></div>';
+  return h;
+}
+function chartsHtml() {
+  var cnt = {}, order = [], i, c, max = 1, h = '', rk = {Low: 0, Medium: 0, High: 0, Critical: 0};
+  for (i = 0; i < S.history.length; i++) {
+    c = S.history[i].analysis.condition;
+    if (!cnt[c]) { cnt[c] = 0; order.push(c); }
+    cnt[c]++; rk[S.history[i].analysis.riskLevel]++;
+  }
+  order.sort(function (a, b) { return cnt[b] - cnt[a]; });
+  for (i = 0; i < order.length; i++) { if (cnt[order[i]] > max) { max = cnt[order[i]]; } }
+  h += '<div class="card"><h2>Frecuencia de impresiones</h2><p class="sub">Según lo que ha respondido la IA, no diagnósticos confirmados.</p>';
+  for (i = 0; i < Math.min(order.length, 8); i++) { h += '<div class="bar"><span class="n">' + esc(order[i]) + '</span><span class="b"><i style="width:' + Math.round(cnt[order[i]] / max * 100) + '%"></i></span><span class="c">' + cnt[order[i]] + '</span></div>'; }
+  h += '<h3>Por nivel de riesgo</h3>';
+  ['Low', 'Medium', 'High', 'Critical'].forEach(function (lv) { h += '<div class="bar"><span class="n">' + RISK[lv].es + '</span><span class="b"><i style="width:' + Math.round(rk[lv] / Math.max(1, S.history.length) * 100) + '%"></i></span><span class="c">' + rk[lv] + '</span></div>'; });
+  return h + '</div>';
+}
+function viewHist() {
+  var h = '', i, r, it, p;
+  if (!S.history.length) { return '<div class="card"><h2>Historial vacío</h2><p class="small">Los análisis aparecerán aquí sin imágenes. Se guardan solo en este dispositivo.</p></div>'; }
+  h += validationHtml() + chartsHtml();
+  h += '<div class="card"><h2>Casos</h2>';
+  for (i = 0; i < S.history.length; i++) {
+    it = S.history[i]; r = riskOf(it.analysis.riskLevel); p = it.patientData || {};
+    h += '<div class="row" data-open="' + esc(it.id) + '" role="button" tabindex="0"><span class="dot ' + r.cls + '"></span><span class="m"><b>' + esc(it.analysis.condition) + '</b><span class="small">' + new Date(it.timestamp).toLocaleDateString('es-ES') + ' · ' + esc(p.location || '') + ' · ' + esc(p.age) + 'a, ' + esc(p.sex) + '</span></span><span class="small">' + (it.userFeedback ? '✓ ' : '') + r.es + '</span></div>';
+  }
+  return h + '</div><p><button type="button" class="btn danger" data-act="clear">Borrar historial</button></p>';
+}
+function viewAtl() {
+  var h = '<div class="card"><h2>Atlas de referencia</h2><p class="sub">Entradas escritas a mano y enlaces a atlas externos. Los enlaces se abren fuera de la app.</p>', i, a;
+  for (i = 0; i < ATLAS.length; i++) {
+    a = ATLAS[i];
+    h += '<h3>' + esc(a.n) + ' <span class="tag ' + riskOf(a.sev).cls + '">' + (a.icd === 'REF' ? 'Referencia' : esc(a.icd)) + '</span></h3><p style="margin:2px 0">' + esc(a.d) + '</p><div>';
+    a.f.forEach(function (x) { h += '<span class="tag">' + esc(x) + '</span>'; });
+    h += '</div><a class="link" href="' + esc(a.u) + '" target="_blank" rel="noopener noreferrer">Abrir referencia</a>';
+  }
+  return h + '</div>';
+}
+function fld(id, label, type, val, ph, extra) {
+  return '<label class="l" for="' + id + '" style="margin-top:10px">' + label + '</label><input type="' + type + '" id="' + id + '" autocomplete="off"' + (ph ? ' placeholder="' + esc(ph) + '"' : '') + ' value="' + esc(val) + '"' + (extra || '') + '>';
+}
+function viewSet() {
+  var c = S.cfg, p = c.provider, h = '<div class="card"><h2>Conexión con la IA</h2><p class="sub">Esta página es estática: no hay servidor que guarde la clave, que queda en el navegador de cada dispositivo. Elige proveedor.</p>';
+  h += '<label class="l" for="sProv">Proveedor</label><select id="sProv">';
+  Object.keys(PROVIDERS).forEach(function (k) { h += '<option value="' + k + '"' + (p === k ? ' selected' : '') + '>' + PROVIDERS[k] + '</option>'; });
+  h += '</select>';
+  if (p === 'proxy') { h += fld('sUrl', 'URL del proxy (https)', 'url', c.proxyUrl, 'https://tu-app.vercel.app/api/gemini'); }
+  if (p === 'openai') { h += fld('sBase', 'URL base (https o localhost)', 'url', c.openaiBase, 'https://api.openai.com/v1'); }
+  h += fld('sKey', p === 'proxy' ? 'Código de acceso' : 'Clave de API', 'password', S.secrets[p] || '');
+  h += fld('sModel', 'Modelo', 'text', c.models[p === 'proxy' ? 'gemini' : p] || '');
+  if (p === 'gemini' || p === 'proxy') {
+    h += '<label class="l" for="sThink" style="margin-top:10px">Nivel de razonamiento</label><select id="sThink">';
+    ['low', 'medium', 'high'].forEach(function (t) { h += '<option value="' + t + '"' + (c.thinking === t ? ' selected' : '') + '>' + t + '</option>'; });
+    h += '</select>';
+    h += '<label class="consent" style="margin-top:10px;background:var(--bg);color:var(--ink);border-color:var(--line)"><input type="checkbox" id="sGround"' + (c.grounding ? ' checked' : '') + '><span>Búsqueda de Google para citar fuentes. Puede facturarse aparte; si la desmarcas no habrá fuentes.</span></label>';
+  }
+  if (kind(p) === 'openai') {
+    h += '<label class="consent" style="margin-top:10px;background:var(--bg);color:var(--ink);border-color:var(--line)"><input type="checkbox" id="sJson"' + (c.jsonMode ? ' checked' : '') + '><span>Forzar salida JSON (response_format). Desmárcalo si tu servicio lo rechaza.</span></label>';
+  }
+  h += '<label class="consent" style="margin-top:10px;background:var(--bg);color:var(--ink);border-color:var(--line)"><input type="checkbox" id="sRem"' + (c.remember ? ' checked' : '') + '><span>Recordar claves en este dispositivo. Si lo desmarcas, se borran al cerrar la pestaña.</span></label>';
+  h += '<label class="consent" style="margin-top:10px;background:var(--bg);color:var(--ink);border-color:var(--line)"><input type="checkbox" id="sCons"' + (c.consensus ? ' checked' : '') + '><span>Modo consenso (llama a varios proveedores en paralelo y prioriza el riesgo más alto)</span></label>';
+  h += '<div id="consProv" style="margin-top:8px"><label class="l">Proveedores para consenso</label>';
+  ['gemini', 'openai', 'anthropic', 'xai'].forEach(function (pr) {
+    var checked = (c.consensusProviders && c.consensusProviders.indexOf(pr) !== -1) ? ' checked' : '';
+    h += '<label style="display:inline-block;margin-right:12px"><input type="checkbox" class="consP" value="' + pr + '"' + checked + '> ' + PROVIDERS[pr] + '</label>';
+  });
+  h += '</div>';
+  if (c.consensus) { h += '<div class="err" role="note">Modo consenso: la imagen y el contexto clínico se envían a cada proveedor marcado (' + (c.consensusProviders || []).map(function (x) { return PROVIDERS[x]; }).join(', ') + '). Cada uno es un tratamiento distinto de datos de salud (RGPD art. 9) con su contrato y transferencia internacional. Los proveedores sin clave fallarán y se indicará en el resultado.</div>'; }
+  if (p === 'deepseek') { h += '<div class="err" role="note">DeepSeek procesa los datos en servidores de China. Autoridades de protección de datos de Italia y Alemania han actuado contra su servicio por la transferencia de datos (sobre la app; no he comprobado si afecta igual a la API). No lo uses con imágenes de pacientes. El soporte de imagen depende del modelo: si da error, prueba otro (p. ej. deepseek-v4-flash-vision-exp, experimental) o comprueba su documentación.</div>'; }
+  if (p === 'xai') { h += '<div class="ok" role="note" style="font-weight:500">xAI indica que no entrena con entradas ni salidas de clientes de empresa y las borra a los 30 días; no precisa residencia de datos en la UE. Comprueba que tu cuenta es de empresa y que el modelo admite imágenes.</div>'; }
+  h += '<p><button type="button" class="btn" data-act="save">Guardar</button><button type="button" class="btn alt" data-act="test">Probar conexión</button><button type="button" class="btn danger" data-act="wipekey">Borrar claves</button></p><div id="setMsg"></div></div>';
+  h += '<div class="card info"><h2>Coste y privacidad</h2><ul>' +
+    '<li><b>Modelos generalistas no validados en dermatología.</b> Su rendimiento dermatológico no está validado en tu población: mídelo con el panel de validación. Prefiere modelos especializados o locales cuando estén disponibles. Localhost ofrece máxima privacidad.</li>' +
+    '<li><b>El coste en tokens es mínimo.</b> Un análisis son unos 1.500 tokens de entrada y 1.000–1.500 de salida: del orden de 0,001 a 0,01 € según el modelo, o de 1 a 8 € por cada 1.000 análisis. La búsqueda de Google, si se factura aparte, puede pesar más que los tokens.</li>' +
+    '<li><b>Elige por privacidad y validación, no por precio.</b> En Gemini la capa gratuita puede usar los datos para mejorar los productos de Google y la de pago no (página oficial de precios). Comprueba lo mismo, y la residencia de datos, en el proveedor que uses.</li>' +
+    '<li>El modo consenso multiplica por el número de proveedores el coste y los destinos de los datos; usa modelos de gama baja por defecto, que son los menos fiables en una tarea de seguridad.</li>' +
+    '<li>Los intermediarios que enrutan a varios modelos añaden terceros al tratamiento de datos.</li>' +
+    '<li>Con un modelo local (compatible OpenAI en localhost) la imagen no sale del equipo, pero su calidad en dermatología no está validada y la mayoría de modelos locales con visión son bastante peores.</li>' +
+    '<li>Ningún modelo generalista tiene marcado CE ni validación en dermatología. El panel de validación del historial sirve para medirlo con tus casos.</li>' +
+    '<li>Las fotos no se guardan. El historial guarda solo el análisis y los datos clínicos, en este dispositivo.</li></ul></div>';
+  return h;
+}
+
+/* ---------- Render ---------- */
+function renderNav() {
+  var h = '', i;
+  for (i = 0; i < TABS.length; i++) { h += '<button type="button" data-tab="' + TABS[i].id + '" class="' + (S.tab === TABS[i].id ? 'on' : '') + '"' + (S.tab === TABS[i].id ? ' aria-current="page"' : '') + '>' + TABS[i].t + '</button>'; }
+  navEl.innerHTML = h;
+}
+function render(keep) {
+  var v = S.tab === 'new' ? viewNew() : S.tab === 'hist' ? viewHist() : S.tab === 'atl' ? viewAtl() : viewSet();
+  viewEl.innerHTML = v;
+  renderNav();
+  if (S.tab === 'new' && !S.current) { renderImgBox(); renderGo(); renderErr(); }
+  if (!keep) { window.scrollTo(0, 0); }
+}
+
+/* ---------- Copiar / descargar ---------- */
+function copyText(txt, msgId) {
+  var msg = el(msgId);
+  function ok() { if (msg) { msg.textContent = ' Copiado.'; } }
+  function fb() {
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, 999999);
+    var done = false; try { done = document.execCommand('copy'); } catch (e) { done = false; }
+    document.body.removeChild(ta);
+    if (done) { ok(); } else if (msg) { msg.textContent = ' No se pudo copiar.'; }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(ok, fb); } else { fb(); }
+}
+function downloadCsv() {
+  var blob = new Blob(['\ufeff' + buildCsv()], {type: 'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = 'dermascan-validacion-' + new Date().toISOString().slice(0, 10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  window.setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+}
+
+/* ---------- Eventos ---------- */
+navEl.addEventListener('click', function (ev) {
+  var b = ev.target;
+  while (b && b !== navEl && !b.getAttribute('data-tab')) { b = b.parentNode; }
+  if (b && b !== navEl) { S.tab = b.getAttribute('data-tab'); S.openId = null; if (S.tab !== 'new') { /* conserva el resultado actual */ } render(); }
+});
+function findRec(id) { var i; for (i = 0; i < S.history.length; i++) { if (S.history[i].id === id) { return S.history[i]; } } return null; }
+function saveFb(confirmed) {
+  var fin = el('fFinal') ? el('fFinal').value.trim() : '', hist = el('fHist') ? el('fHist').checked : false, rec = S.current;
+  var ft = el('fType') ? el('fType').value : '', chks = document.querySelectorAll('.pmChk'), pm = null, i;
+  if (!rec) { return; }
+  if (chks.length) { pm = {}; for (i = 0; i < chks.length; i++) { pm[chks[i].value] = chks[i].checked; } }
+  rec.userFeedback = {confirmed: confirmed, finalDx: fin || undefined, histology: (fin || ft) ? hist : undefined, finalType: ft || undefined, perModel: pm || undefined};
+  saveHistory(); S.editFb = false; render();
+}
+viewEl.addEventListener('click', function (ev) {
+  var t = ev.target, act, tog, open, id;
+  while (t && t !== viewEl && !(t.getAttribute && (t.getAttribute('data-act') || t.getAttribute('data-tog') || t.getAttribute('data-open')))) { t = t.parentNode; }
+  if (!t || t === viewEl) { return; }
+  act = t.getAttribute('data-act'); tog = t.getAttribute('data-tog'); open = t.getAttribute('data-open');
+  if (tog) { S.form[tog] = !S.form[tog]; t.setAttribute('aria-pressed', S.form[tog] ? 'true' : 'false'); return; }
+  if (open) { S.current = findRec(open); S.currentImg = null; S.editFb = false; S.tab = 'new'; render(); return; }
+  if (act === 'cam') { el('fCam').click(); }
+  else if (act === 'gal') { el('fGal').click(); }
+  else if (act === 'rmimg') { S.img = null; S.consent = false; renderImgBox(); renderGo(); }
+  else if (act === 'go') { startAnalysis(); }
+  else if (act === 'back') { S.current = null; S.currentImg = null; S.editFb = false; render(); }
+  else if (act === 'zoom') { t.className = t.className ? '' : 'zoom'; }
+  else if (act === 'copyrep') { copyText(reportText(S.current), 'cpMsg'); }
+  else if (act === 'editfb') { S.editFb = true; render(); }
+  else if (act === 'fb1') { saveFb(true); }
+  else if (act === 'fb0') { saveFb(false); }
+  else if (act === 'csv') { downloadCsv(); }
+  else if (act === 'csvcopy') { copyText(buildCsv(), 'cpMsg2'); }
+  else if (act === 'clear') { if (window.confirm('¿Borrar todo el historial de este dispositivo?')) { S.history = []; saveHistory(); S.current = null; render(); } }
+  else if (act === 'save') { readSettings(); saveSettings(); setMsg('ok', 'Ajustes guardados.'); }
+  else if (act === 'wipekey') { S.secrets = {gemini: '', openai: '', anthropic: '', deepseek: '', xai: '', proxy: ''}; lsDel(KEY_SECRETS); lsDel(KEY_SECRETS, window.sessionStorage); lsDel(KEY_SECRET); lsDel(KEY_SECRET, window.sessionStorage); render(); setMsg('ok', 'Claves borradas de este dispositivo.'); }
+  else if (act === 'test') { testConn(); }
+});
+viewEl.addEventListener('keydown', function (ev) {
+  if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.getAttribute && ev.target.getAttribute('data-open')) { ev.preventDefault(); ev.target.click(); }
+});
+viewEl.addEventListener('input', function (ev) {
+  var t = ev.target, f = S.form;
+  if (t.id === 'fAge') { f.age = t.value; } else if (t.id === 'fLoc') { f.loc = t.value; }
+  else if (t.id === 'fEvol') { f.evol = t.value; } else if (t.id === 'fSize') { f.size = t.value; }
+});
+viewEl.addEventListener('change', function (ev) {
+  var t = ev.target;
+  if (t.id === 'fSex') { S.form.sex = t.value; }
+  else if (t.name === 'photo') { S.form.phototype = t.value; render(true); }
+  else if (t.id === 'fDermo') { S.form.dermo = t.value; }
+  else if (t.id === 'cConsent') { S.consent = t.checked; var b = el('bGo'); if (b) { b.disabled = !t.checked; } }
+  else if (t.id === 'sProv') { saveFromProvChange(); }
+});
+el('fCam').addEventListener('change', onFile);
+el('fGal').addEventListener('change', onFile);
+el('bCancel').addEventListener('click', cancelCall);
+
+function readSettings() {
+  var c = S.cfg, p = c.provider;
+  if (el('sProv')) { p = c.provider = el('sProv').value; }
+  if (el('sUrl')) { c.proxyUrl = el('sUrl').value.trim(); }
+  if (el('sBase')) { c.openaiBase = el('sBase').value.trim() || DEFAULTS.openaiBase; }
+  if (el('sKey')) { S.secrets[p] = el('sKey').value.trim(); }
+  if (el('sRem')) { c.remember = el('sRem').checked; }
+  if (el('sModel')) { c.models[p === 'proxy' ? 'gemini' : p] = el('sModel').value.trim() || DEFAULTS.models[p === 'proxy' ? 'gemini' : p]; }
+  if (el('sThink')) { c.thinking = el('sThink').value; }
+  if (el('sGround')) { c.grounding = el('sGround').checked; }
+  if (el('sJson')) { c.jsonMode = el('sJson').checked; }
+  if (el('sCons')) { c.consensus = el('sCons').checked; }
+  var cps = document.querySelectorAll('.consP');
+  c.consensusProviders = [];
+  for (var i = 0; i < cps.length; i++) { if (cps[i].checked) { c.consensusProviders.push(cps[i].value); } }
+  if (!c.consensusProviders.length) { c.consensusProviders = DEFAULTS.consensusProviders; }
+}
+function saveFromProvChange() {
+  // Guarda lo escrito del proveedor anterior antes de cambiar de formulario.
+  var next = el('sProv').value, prev = S.cfg.provider;
+  S.cfg.provider = prev; readSettingsAs(prev); S.cfg.provider = next; render(true);
+}
+function readSettingsAs(p) {
+  var c = S.cfg;
+  if (el('sUrl')) { c.proxyUrl = el('sUrl').value.trim(); }
+  if (el('sBase')) { c.openaiBase = el('sBase').value.trim() || DEFAULTS.openaiBase; }
+  if (el('sKey')) { S.secrets[p] = el('sKey').value.trim(); }
+  if (el('sModel')) { c.models[p === 'proxy' ? 'gemini' : p] = el('sModel').value.trim() || DEFAULTS.models[p === 'proxy' ? 'gemini' : p]; }
+  if (el('sThink')) { c.thinking = el('sThink').value; }
+  if (el('sGround')) { c.grounding = el('sGround').checked; }
+  if (el('sJson')) { c.jsonMode = el('sJson').checked; }
+}
+function setMsg(kind, txt) { var m = el('setMsg'); if (m) { m.innerHTML = '<div class="' + (kind === 'ok' ? 'ok' : 'err') + '" role="status">' + esc(txt) + '</div>'; } }
+function testConn() {
+  readSettings(); saveSettings();
+  S.cancelled = false;
+  busy(true, 'Probando conexión…');
+  callLLM('Responde solo con la palabra: ok', null, function (e, r) {
+    if (S.cancelled) { return; }
+    busy(false);
+    if (e) { setMsg('err', e.message); } else { setMsg('ok', 'Conexión correcta con ' + PROVIDERS[prov()] + '. Respuesta: ' + (String(r.text).trim().slice(0, 40) || '(vacía)')); }
+  });
+}
+
+/* ---------- Inicio ---------- */
+try {
+  var cv = document.createElement('canvas'); cv.width = 180; cv.height = 180;
+  var cx = cv.getContext('2d');
+  cx.fillStyle = '#0F5E63'; cx.fillRect(0, 0, 180, 180);
+  cx.fillStyle = '#FFFFFF'; cx.beginPath(); cx.arc(90, 90, 52, 0, Math.PI * 2); cx.fill();
+  cx.fillStyle = '#0F5E63'; cx.beginPath(); cx.arc(90, 90, 24, 0, Math.PI * 2); cx.fill();
+  el('touchIcon').setAttribute('href', cv.toDataURL('image/png'));
+} catch (e1) { /* sin icono */ }
+loadSettings();
+loadHistory();
+render();
+})();
+</script>
+</body>
+</html>
